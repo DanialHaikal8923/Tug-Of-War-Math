@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarik Tali: Matematik</title>
+  <meta name="theme-color" content="#3aa0f3" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root{
+      --biru:#3aa0f3; --biru-gelap:#177dca; --merah:#ff6f7d; --merah-gelap:#ea4d5e;
+      --latar:#eef4fb; --kad:#ffffff; --teks:#354052; --bayang:0 14px 30px rgba(64, 85, 110, 0.14);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--teks);
+      background:
+        radial-gradient(circle at top left, #ffe8ef 0%, transparent 28%),
+        radial-gradient(circle at top right, #dff2ff 0%, transparent 30%),
+        linear-gradient(180deg,#f6fbff,#eef4fb);
+    }
+    .halaman{max-width:1600px;margin:0 auto;padding:16px 18px 28px}
+    .kepala{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px}
+    .butang-kecil{
+      display:inline-flex;align-items:center;gap:10px;background:#fff;border:none;border-radius:20px;
+      box-shadow:var(--bayang);padding:12px 18px;font-weight:900;color:var(--biru-gelap)
+    }
+    .tajuk{text-align:center;font-size:38px;font-weight:900;letter-spacing:1px;color:var(--biru-gelap);margin:0;flex:1}
+    .pilihan{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:4px 0 16px}
+    .pilihan select{
+      border:none;border-radius:16px;padding:12px 14px;background:#fff;box-shadow:var(--bayang);font-weight:800;color:#475569
+    }
+    .bungkus{display:grid;grid-template-columns:380px 1fr 380px;gap:22px;align-items:start}
+    .panel{background:#fff;border-radius:30px;box-shadow:var(--bayang);overflow:hidden}
+    .panel-kepala{
+      color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;font-weight:900;font-size:22px
+    }
+    .panel-kepala.biru{background:linear-gradient(180deg,var(--biru),var(--biru-gelap))}
+    .panel-kepala.merah{background:linear-gradient(180deg,var(--merah),var(--merah-gelap))}
+    .lencana-skor{
+      background:#fff;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;
+      font-size:22px;font-weight:900
+    }
+    .panel-kepala.biru .lencana-skor{color:var(--biru-gelap)}
+    .panel-kepala.merah .lencana-skor{color:var(--merah-gelap)}
+    .soalan{
+      text-align:center;font-size:34px;font-weight:900;padding:20px 14px;min-height:98px;display:flex;
+      align-items:center;justify-content:center;background:#ecf7ff;color:var(--biru-gelap)
+    }
+    .panel-merah .soalan{background:#fff0f2;color:var(--merah-gelap)}
+    .jawapan{padding:12px 14px 16px}
+    .papar-jawapan{
+      height:56px;border:3px solid #ececec;border-radius:18px;background:#fff;display:flex;align-items:center;
+      justify-content:center;font-size:24px;font-weight:900;color:#667085;margin-bottom:14px
+    }
+    .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .kekunci{
+      height:92px;border:none;border-radius:20px;background:#fafafa;font-size:24px;font-weight:900;
+      box-shadow:inset 0 0 0 2px #eeeeee;color:#111827
+    }
+    .kekunci:active{transform:scale(.98)}
+    .hapus{background:var(--merah);color:#fff;box-shadow:none}
+    .sah{background:var(--biru);color:#fff;box-shadow:none}
+    .arena{background:#fff;border-radius:32px;box-shadow:var(--bayang);padding:14px}
+    .arena-atas{
+      background:#f7f7f8;border-radius:24px;padding:12px 18px;display:grid;grid-template-columns:1fr 1fr 1fr;
+      align-items:center;text-align:center;margin-bottom:14px
+    }
+    .angka-kecil{font-size:18px;font-weight:900;line-height:1.15;color:#334155}
+    .angka-kecil .besar{display:block;font-size:24px;margin-top:4px}
+    .jam{
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      font-size:22px;font-weight:900;color:var(--biru-gelap)
+    }
+    .papar-jam{
+      min-width:98px; padding:8px 14px; border-radius:16px; background:#ffffff;
+      box-shadow:inset 0 0 0 2px #e8edf3; letter-spacing:1px;
+    }
+    .pentas{
+      position:relative;min-height:510px;background:linear-gradient(180deg,#fffdfd,#fff8fb);
+      border-radius:26px;overflow:hidden;box-shadow:inset 0 0 0 2px #efeff0
+    }
+    .garis-tengah{
+      position:absolute;top:0;bottom:0;left:50%;border-left:4px dashed #a0a0a0;transform:translateX(-50%)
+    }
+    .tali{
+      position:absolute;left:12%;right:12%;top:54%;height:6px;background:#4a3a3a;transform:translateY(-50%);
+      border-radius:10px;z-index:1
+    }
+    .hadiah{
+      position:absolute;top:calc(54% - 42px);left:50%;
+      transform:translateX(calc(-50% + var(--alih-hadiah, 0px)));
+      font-size:54px;z-index:3;transition:transform .35s ease;filter:drop-shadow(0 6px 10px rgba(0,0,0,.12))
+    }
+    .pasukan-visual{
+      position:absolute;bottom:28px;width:290px;text-align:center;z-index:2
+    }
+    .pasukan-kiri{left:38px}
+    .pasukan-kanan{right:38px}
+    .ahli{display:inline-block;font-size:84px;margin:0 2px;user-select:none}
+    .awan{position:absolute;font-size:30px;opacity:.8}
+    .awan.satu{top:28px;left:60px}
+    .awan.dua{top:54px;right:90px}
+    .petunjuk{text-align:center;margin-top:14px;font-weight:900;color:#526073}
+    .mesej{text-align:center;margin-top:10px;font-size:18px;font-weight:900;min-height:28px;color:#475569}
+    .baris-bawah{margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .butang-bawah{
+      border:none;border-radius:18px;padding:12px 18px;background:#fff;box-shadow:var(--bayang);font-weight:900;color:#334155
+    }
+    .butang-mula{background:var(--biru);color:#fff}
+    .lapisan-menang{
+      position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:50
+    }
+    .lapisan-menang.tunjuk{display:flex}
+    .kad-menang{
+      max-width:560px;width:100%;background:#fff;border-radius:30px;box-shadow:var(--bayang);padding:24px 24px 20px;text-align:center
+    }
+    .hiasan-menang{
+      display:flex;justify-content:center;align-items:center;gap:18px;font-size:52px;margin-bottom:8px;flex-wrap:wrap
+    }
+    .garis-menang{height:6px;background:#4a3a3a;border-radius:999px;margin:10px 0 14px}
+    .kad-menang h2{margin:0 0 12px;font-size:34px;color:var(--biru-gelap)}
+    .kad-menang p{margin:0 auto 16px;line-height:1.5;font-size:18px;max-width:420px}
+    .watak-menang{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .watak-menang .ikon{font-size:62px;line-height:1}
+    .watak-menang .tengah{display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;min-width:180px}
+    @media (max-width:1280px){
+      .bungkus{grid-template-columns:1fr}
+      .pentas{min-height:430px}
+      .pasukan-visual{width:220px}
+      .ahli{font-size:72px}
+    }
+    @media (max-width:700px){
+      .kepala{flex-wrap:wrap}
+      .tajuk{order:3;width:100%;font-size:30px}
+      .pasukan-visual{width:170px}
+      .ahli{font-size:58px}
+      .hadiah{font-size:46px}
+      .kad-menang h2{font-size:28px}
+      .watak-menang{justify-content:center}
+      .watak-menang .ikon{font-size:50px}
+      .jam{font-size:18px}
+      .papar-jam{min-width:86px}
+    }
+  </style>
+</head>
+<body>
+  <div class="halaman">
+    <div class="kepala">
+      <button class="butang-kecil" type="button">🏠 LAMAN UTAMA</button>
+      <h1 class="tajuk">TARIK TALI: MATEMATIK</h1>
+      <button class="butang-kecil" type="button">ARAS RENDAH</button>
+    </div>
+
+    <div class="pilihan">
+      <select id="pilihanJulat">
+        <option value="100">Lingkungan 100</option>
+        <option value="1000">Lingkungan 1000</option>
+        <option value="10000">Lingkungan 10000</option>
+        <option value="100000" selected>Lingkungan 100000</option>
+        <option value="1000000">Lingkungan 1000000</option>
+      </select>
+      <select id="pilihanSasaran">
+        <option value="3" selected>3 tarikan untuk menang</option>
+        <option value="4">4 tarikan untuk menang</option>
+        <option value="5">5 tarikan untuk menang</option>
+      </select>
+    </div>
+
+    <div class="bungkus">
+      <section class="panel panel-biru">
+        <div class="panel-kepala biru">
+          <span>PASUKAN BIRU</span>
+          <span class="lencana-skor" id="skorKiri">0</span>
+        </div>
+        <div class="soalan" id="soalanKiri">62,000 + 12,000 = ?</div>
+        <div class="jawapan">
+          <div class="papar-jawapan" id="paparKiri">0</div>
+          <div class="pad" id="padKiri"></div>
+        </div>
+      </section>
+
+      <section class="arena">
+        <div class="arena-atas">
+          <div class="angka-kecil">KIRI<span class="besar" id="angkaKiri">0</span></div>
+          <div class="jam"><span>⏱️</span><span class="papar-jam" id="masa">00:00</span></div>
+          <div class="angka-kecil">KANAN<span class="besar" id="angkaKanan">0</span></div>
+        </div>
+
+        <div class="pentas">
+          <div class="awan satu">☁️</div>
+          <div class="awan dua">☁️</div>
+          <div class="garis-tengah"></div>
+          <div class="tali"></div>
+          <div class="hadiah" id="hadiah">🍫</div>
+
+          <div class="pasukan-visual pasukan-kiri">
+            <span class="ahli">🐰</span>
+            <span class="ahli">🧸</span>
+          </div>
+
+          <div class="pasukan-visual pasukan-kanan">
+            <span class="ahli">🐼</span>
+            <span class="ahli">🐱</span>
+          </div>
+        </div>
+
+        <div class="petunjuk">Jawab soalan tambah atau tolak yang mudah. Jawapan betul akan menarik coklat ke arah pasukan anda.</div>
+        <div class="mesej" id="mesej">Permainan baharu bermula. Jawab soalan mudah dengan cepat.</div>
+
+        <div class="baris-bawah">
+          <button class="butang-bawah butang-mula" id="butangMula">MULA BAHARU</button>
+          <button class="butang-bawah" id="butangTukar">TUKAR SOALAN</button>
+        </div>
+      </section>
+
+      <section class="panel panel-merah">
+        <div class="panel-kepala merah">
+          <span>PASUKAN MERAH</span>
+          <span class="lencana-skor" id="skorKanan">0</span>
+        </div>
+        <div class="soalan" id="soalanKanan">54,000 - 13,000 = ?</div>
+        <div class="jawapan">
+          <div class="papar-jawapan" id="paparKanan">0</div>
+          <div class="pad" id="padKanan"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="lapisan-menang" id="lapisanMenang">
+    <div class="kad-menang">
+      <div class="hiasan-menang"><span>🍫</span><span>🏆</span><span>🍫</span></div>
+      <div class="garis-menang"></div>
+      <h2 id="tajukMenang">Pasukan Biru Menang</h2>
+      <p id="teksMenang">Tahniah! Pasukan anda berjaya menarik coklat ke kawasan kemenangan.</p>
+      <div class="watak-menang">
+        <span class="ikon">🐰</span>
+        <div class="tengah">
+          <button class="butang-bawah butang-mula" id="butangMainLagi">MAIN LAGI</button>
+          <span class="ikon">🧸</span>
+        </div>
+        <span class="ikon">🐼</span>
+        <span class="ikon">🐱</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
